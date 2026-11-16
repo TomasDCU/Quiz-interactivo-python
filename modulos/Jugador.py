@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
-from typing import ClassVar # Indica que COMODINES pertenece a la clase y no es un campo del jugador
+from typing import ClassVar # Indica que COMODINES pertenece a ClassVar y no es un campo de la clase Jugador
+
+TIEMPO_PREGUNTA = 30
 
 @dataclass # El decorador genera el __init__
 class Jugador:
@@ -9,14 +11,14 @@ class Jugador:
     nombre: str
     puntaje: int = 0
     aciertos: int = 0
-    TIEMPO_PREGUNTA: int = 30
+    tiempo: int = TIEMPO_PREGUNTA
     _comodines_usados: set[str] = field(default_factory=set, init=False) # Registro de comodines ya usados
 
     def __post_init__(self):
         if not isinstance(self.nombre, str):
             raise TypeError("El nombre debe ser una cadena de texto")
         self.nombre = self.nombre.strip() or "Jugador" # Si el nombre del jugador es un espacio se asigna 'Jugador'
-        if (not isinstance(self.TIEMPO_PREGUNTA, int) or isinstance(self.TIEMPO_PREGUNTA, bool) or self.TIEMPO_PREGUNTA <= 0):
+        if (not isinstance(self.tiempo, int) or isinstance(self.tiempo, bool) or self.tiempo <= 0):
             raise ValueError("El tiempo por pregunta debe ser un numero entero positivo")
 
     def registrar_acierto(self, puntos: int):
@@ -42,7 +44,7 @@ class Jugador:
 if __name__ == "__main__":
     jugador = Jugador(" Tomas ")
     assert jugador.nombre == "Tomas" # Si devuelve True continua la ejecucion de prueba
-    assert jugador.TIEMPO_PREGUNTA == 30
+    assert jugador.tiempo == TIEMPO_PREGUNTA
     assert jugador.puntaje == 0 and jugador.aciertos == 0
 
     jugador.registrar_acierto(10)
